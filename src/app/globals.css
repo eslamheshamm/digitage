@@ -1,26 +1,243 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-primary: #ffd349;
+  --color-gray: #474747;
+  --color-gray-dark: #2d2d2d;
+
+  --font-rock: var(--font-rockwell), serif;
+  --font-rockbold: var(--font-rockwell-bold), serif;
+  --font-body: var(--font-poppins), sans-serif;
+  --font-title: var(--font-montserrat), sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.imageBlack {
+  filter: grayscale(1);
+  transition: filter 300ms ease;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (hover: hover) and (pointer: fine) {
+  .imageBlack:hover {
+    filter: grayscale(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/*
+ * Scroll-reveal refinements (overrides sal.js defaults):
+ * shorter travel distances and a gentle zoom start so elements
+ * settle into place instead of flying across the screen.
+ */
+[data-sal="slide-left"]:not(.sal-animate) {
+  transform: translateX(32px);
+}
+[data-sal="slide-right"]:not(.sal-animate) {
+  transform: translateX(-32px);
+}
+[data-sal="slide-up"]:not(.sal-animate) {
+  transform: translateY(32px);
+}
+[data-sal="slide-down"]:not(.sal-animate) {
+  transform: translateY(-32px);
+}
+[data-sal="zoom-in"]:not(.sal-animate) {
+  transform: scale(0.96);
+}
+[data-sal="zoom-out"]:not(.sal-animate) {
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-sal][data-sal|="fade"],
+  [data-sal][data-sal|="slide"],
+  [data-sal][data-sal|="zoom"] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+.inBack {
+  z-index: -999;
+}
+
+/* Carousel */
+.carousel-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.carousel-wrapper {
+  display: flex;
+  position: relative;
+}
+
+.carousel-content-wrapper {
+  overflow: hidden;
+  width: 90%;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.carousel-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  /* on-screen movement: ease-in-out-cubic, transform only (GPU) */
+  transition: transform 400ms cubic-bezier(0.645, 0.045, 0.355, 1);
+  will-change: transform;
+  -ms-overflow-style: none; /* hide scrollbar in IE and Edge */
+  scrollbar-width: none; /* hide scrollbar in Firefox */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-content {
+    transition: none;
+  }
+}
+
+/* hide scrollbar in webkit browser */
+.carousel-content::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-content > * {
+  width: 100%;
+  flex-shrink: 0;
+  flex-grow: 1;
+  margin: 0 auto;
+}
+
+.carousel-content.show-2 > * {
+  width: 50%;
+}
+
+.carousel-content.show-3 > * {
+  width: calc(100% / 3);
+}
+
+.carousel-content.show-4 > * {
+  width: calc(100% / 4);
+}
+
+.carousel-content.show-5 > * {
+  width: calc(100% / 5);
+}
+
+.left-arrow-button,
+.right-arrow-button {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
+    rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  transition: background-color 150ms ease;
+}
+
+.left-arrow-button:hover,
+.right-arrow-button:hover {
+  background-color: #ddd;
+}
+
+.left-arrow-button:focus,
+.right-arrow-button:focus {
+  outline: none;
+}
+
+.left-arrow-button {
+  left: 24px;
+}
+
+.right-arrow-button {
+  right: 24px;
+}
+
+.left-arrow {
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 7.5px solid transparent;
+  border-bottom: 7.5px solid transparent;
+  border-right: 10px solid #ffd349;
+  border-left: 5px solid transparent;
+  transform: translateX(-25%);
+}
+
+.right-arrow {
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 7.5px solid transparent;
+  border-bottom: 7.5px solid transparent;
+  border-left: 10px solid #ffd349;
+  border-right: 5px solid transparent;
+  transform: translateX(25%);
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .left-arrow-button,
+  .right-arrow-button {
+    display: none;
+  }
+}
+
+.indicator-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 auto;
+  -ms-overflow-style: none; /* hide scrollbar in IE and Edge */
+  scrollbar-width: none; /* hide scrollbar in Firefox */
+  max-width: 56px;
+  overflow: auto;
+}
+
+.indicator-container::-webkit-scrollbar {
+  display: none;
+}
+
+.indicator-container > * {
+  margin-left: 6px;
+  border-radius: 12px;
+  transition-property: all;
+  transition-duration: 250ms;
+  transition-timing-function: linear;
+}
+
+.indicator-container > div:first-child {
+  margin-left: 0px;
+}
+
+.indicator-container > .dots-active {
+  width: 12px;
+  height: 6px;
+  background-color: #00000096;
+  flex-shrink: 0;
+  flex-grow: 1;
+}
+
+.indicator-container > .dots-close {
+  width: 6px;
+  height: 6px;
+  background-color: #00000033;
+  flex-shrink: 0;
+  flex-grow: 1;
+}
+
+.indicator-container > .dots-far {
+  width: 4px;
+  height: 4px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  background-color: #00000033;
+  flex-shrink: 0;
+  flex-grow: 1;
 }
