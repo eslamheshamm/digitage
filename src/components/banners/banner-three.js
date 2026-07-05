@@ -36,11 +36,13 @@ const BannerThree = () => {
           <Image src={horse} alt="horse" className="imageBlack" quality={100} />
         </figure>
       </div>
-      <button className="bg-primary py-6 px-4 text-sm md:text-base md:py-6 md:px-10 uppercase tracking-wider md:tracking-widest shadow-xl font-semibold rounded-xl mt-12 transition-transform duration-200 ease-out hover:-translate-y-1 hover:scale-105 active:scale-[0.97] motion-reduce:transition-none motion-reduce:hover:transform-none focus:outline-none">
-        <a href={companyProfile} download>
-          OUR company profile
-        </a>
-      </button>
+      <a
+        href={companyProfile}
+        download
+        className="inline-block bg-primary py-6 px-4 text-sm md:text-base md:py-6 md:px-10 uppercase tracking-wider md:tracking-widest shadow-xl font-semibold rounded-xl mt-12 transition-transform duration-200 ease-out hover:-translate-y-1 hover:scale-105 active:scale-[0.97] motion-reduce:transition-none motion-reduce:hover:transform-none focus:outline-none"
+      >
+        OUR company profile
+      </a>
     </section>
   )
 }
