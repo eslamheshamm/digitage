@@ -42,18 +42,12 @@ export const metadata = {
     description: siteDescription,
     type: "website",
     url: "http://digitagestudio.com/",
-    images: [
-      "https://res.cloudinary.com/eslamhesham/image/upload/v1615234506/Screenshot_55_t16rpj.png",
-    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     creator: "@eslamheshamm",
     title: siteTitle,
     description: siteDescription,
-  },
-  icons: {
-    icon: "/logo.png",
   },
 }
 
