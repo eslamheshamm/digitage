@@ -7,6 +7,8 @@ const Carousel = ({
   show,
   infiniteLoop,
   withIndicator,
+  autoPlay,
+  autoPlayInterval = 2500,
   renderPreviousButton,
   renderNextButton,
   containerClassName,
@@ -81,22 +83,31 @@ const Carousel = ({
   }, [withIndicator, currentIndex])
 
   /**
-   * Move forward to the next item
+   * Move forward to the next item.
+   * When repeating, the index is clamped to the cloned tail (length + show)
+   * so rapid clicks can't slide past the last slide into empty space —
+   * the boundary reset in handleTransitionEnd brings it back into range.
    */
-  const nextItem = () => {
-    if (isRepeating || currentIndex < length - show) {
-      setCurrentIndex(prevState => prevState + 1)
-    }
-  }
+  const nextItem = React.useCallback(() => {
+    setCurrentIndex(prevState => {
+      if (isRepeating) {
+        return prevState < length + show ? prevState + 1 : prevState
+      }
+      return prevState < length - show ? prevState + 1 : prevState
+    })
+  }, [isRepeating, length, show])
 
   /**
-   * Move backward to the previous item
+   * Move backward to the previous item (clamped at the cloned head)
    */
-  const previousItem = () => {
-    if (isRepeating || currentIndex > 0) {
-      setCurrentIndex(prevState => prevState - 1)
-    }
-  }
+  const previousItem = React.useCallback(() => {
+    setCurrentIndex(prevState => {
+      if (isRepeating) {
+        return prevState > 0 ? prevState - 1 : prevState
+      }
+      return prevState > 0 ? prevState - 1 : prevState
+    })
+  }, [isRepeating])
 
   /**
    * Handle when the user start the swipe gesture
@@ -153,6 +164,40 @@ const Carousel = ({
       }
     }
   }
+
+  /**
+   * Safety net for the boundary reset: if transitionend never fires
+   * (interrupted transition, background tab), perform the same jump
+   * back into range so the carousel can't stall on the cloned slides.
+   */
+  React.useEffect(() => {
+    if (!isRepeating) return
+    if (currentIndex === 0 || currentIndex === length + show) {
+      const timer = setTimeout(() => {
+        setTransitionEnabled(false)
+        setCurrentIndex(currentIndex === 0 ? length : show)
+      }, 600)
+      return () => clearTimeout(timer)
+    }
+  }, [currentIndex, isRepeating, length, show])
+
+  /**
+   * Auto-advance one item per interval. Paused while the user hovers or
+   * touches the carousel, while the tab is hidden, and disabled entirely
+   * for users who prefer reduced motion.
+   */
+  const [isPaused, setIsPaused] = React.useState(false)
+
+  React.useEffect(() => {
+    if (!autoPlay || isPaused) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    const id = setInterval(() => {
+      if (!document.hidden) {
+        nextItem()
+      }
+    }, autoPlayInterval)
+    return () => clearInterval(id)
+  }, [autoPlay, autoPlayInterval, isPaused, nextItem])
 
   /**
    * Render previous items before the first item
@@ -228,6 +273,10 @@ const Carousel = ({
         data-testid="carousel-wrapper"
         className={`carousel-wrapper ${wrapperClassName || ""}`}
         {...wrapperProps}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
       >
         {isRepeating || currentIndex > 0 ? (
           renderPreviousButton ? (

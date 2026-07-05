@@ -48,7 +48,7 @@ const Clients = () => {
         data-sal-duration="450"
         data-sal-easing="ease-out-quart"
       >
-        <Carousel show={4} infiniteLoop withIndicator>
+        <Carousel show={4} infiniteLoop withIndicator autoPlay>
           {logos.map((logo, index) => (
             <h2 key={index} data-testid={`carousel-item-${(index % 3) + 1}`}>
               <Image
