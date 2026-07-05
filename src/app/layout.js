@@ -67,7 +67,7 @@ export default function RootLayout({ children }) {
       >
         <ScrollReveal />
         <Header siteTitle={siteTitle} />
-        <main className="w-11/12 lg:w-10/12 xl:w-9/12 mx-auto">{children}</main>
+        <main className="w-11/12 max-w-[1700px] mx-auto">{children}</main>
         <Footer />
         <Script id="microsoft-clarity" strategy="afterInteractive">
           {`
