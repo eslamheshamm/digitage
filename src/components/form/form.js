@@ -3,12 +3,6 @@
 import React from "react"
 import { useForm } from "react-hook-form"
 
-function encode(data) {
-  return Object.keys(data)
-    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-    .join("&")
-}
-
 const FormInputs = () => {
   const {
     register,
@@ -16,24 +10,23 @@ const FormInputs = () => {
     formState: { errors },
   } = useForm()
   const [succes, setSucces] = React.useState(false)
+  const [sendError, setSendError] = React.useState(false)
   const [disable, setDisable] = React.useState(false)
-  const onSubmit = (data, e) => {
-    e.preventDefault()
-    const form = e.target
-    fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: encode({
-        "form-name": form.getAttribute("name"),
-        ...data,
-      }),
-    })
-      .then(res => {
-        console.log(res)
-        setSucces(true)
-        setDisable(true)
+  const onSubmit = async data => {
+    setSendError(false)
+    setDisable(true)
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       })
-      .catch(error => alert(error))
+      if (!res.ok) throw new Error("Failed to send")
+      setSucces(true)
+    } catch {
+      setSendError(true)
+      setDisable(false)
+    }
   }
 
   return (
@@ -43,15 +36,11 @@ const FormInputs = () => {
       autoComplete="off"
       id="form"
       name="contact"
-      method="POST"
-      data-netlify="true"
-      action="/thanks/"
-      data-netlify-honeypot="bot-field"
     >
-      <input type="hidden" name="form-name" value="contact" />
       <p className="hidden">
         <label>
-          Don’t fill this out if you’re human: <input name="bot-field" />
+          Don’t fill this out if you’re human:{" "}
+          <input {...register("bot-field")} />
         </label>
       </p>
       <label className="mb-5">
@@ -93,6 +82,9 @@ const FormInputs = () => {
         )}
       </label>
       {succes && <span>Thank you!</span>}
+      {sendError && (
+        <span>Something went wrong, please try again.</span>
+      )}
 
       <button
         type="submit"
