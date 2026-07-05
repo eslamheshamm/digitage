@@ -1,5 +1,4 @@
 import Image from "next/image"
-import Carousel from "./Carousel/Carousel"
 import logo1 from "./logos/01.png"
 import logo2 from "./logos/02.png"
 import logo3 from "./logos/03.png"
@@ -38,28 +37,35 @@ const logos = [
   logo29, logo30,
 ]
 
+const LogoRow = ({ ariaHidden }) => (
+  <div className="flex items-center shrink-0" aria-hidden={ariaHidden}>
+    {logos.map((logo, index) => (
+      <figure key={index} className="shrink-0 mx-6 md:mx-10">
+        <Image
+          src={logo}
+          alt={ariaHidden ? "" : "Client logo"}
+          className="w-32 h-auto imageBlack"
+          quality={100}
+        />
+      </figure>
+    ))}
+  </div>
+)
+
 const Clients = () => {
   return (
     <section className="flex justify-center items-center flex-col mt-24 md:mt-32 mb-16 md:mb-24 text-white">
       <h2 className="uppercase font-title font-bold text-xs mb-10">clients</h2>
       <div
-        className="flex justify-around items-center h-full w-full"
-        data-sal="zoom-in"
+        className="marquee w-full"
+        data-sal="fade"
         data-sal-duration="450"
         data-sal-easing="ease-out-quart"
       >
-        <Carousel show={4} infiniteLoop withIndicator autoPlay>
-          {logos.map((logo, index) => (
-            <h2 key={index} data-testid={`carousel-item-${(index % 3) + 1}`}>
-              <Image
-                src={logo}
-                alt="logo"
-                className="w-32 h-auto imageBlack"
-                quality={100}
-              />
-            </h2>
-          ))}
-        </Carousel>
+        <div className="marquee-track">
+          <LogoRow />
+          <LogoRow ariaHidden />
+        </div>
       </div>
     </section>
   )
