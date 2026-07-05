@@ -7,7 +7,7 @@ const BannerThree = () => {
   const companyProfile =
     "https://drive.google.com/u/0/uc?id=1K0KZJ8taqEbifGABAUZX4gqMwMM18mZP&export=download"
   return (
-    <section className="flex flex-col items-center w-full my-16">
+    <section className="flex flex-col items-center w-full my-16 md:my-24">
       <div className="w-full grid grid-cols-1 sm:grid-cols-3">
         <figure
           className="w-full"

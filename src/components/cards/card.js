@@ -3,11 +3,11 @@ import Image from "next/image"
 export const Card = ({ heading, smallHeading, text, img, style }) => {
   return (
     <section
-      className="grid grid-cols-1 md:grid-cols-2 justify-items-start rounded-3xl my-16 w-full bg-primary"
+      className="grid grid-cols-1 md:grid-cols-2 justify-items-start rounded-3xl my-16 md:my-24 w-full bg-primary"
       style={style}
     >
       <article
-        className="px-8 mt-16 mb-8 md:px-14 md:my-14 flex flex-col justify-center"
+        className="px-8 mt-16 mb-8 md:px-14 lg:px-20 md:my-14 flex flex-col justify-center"
         data-sal="slide-right"
         data-sal-duration="500"
         data-sal-easing="ease-out-quart"
@@ -38,7 +38,7 @@ export const Card = ({ heading, smallHeading, text, img, style }) => {
 export const CardFlipped = ({ heading, smallHeading, text, img, style }) => {
   return (
     <section
-      className="grid grid-cols-1 md:grid-cols-2 justify-items-start rounded-3xl my-16"
+      className="grid grid-cols-1 md:grid-cols-2 justify-items-start rounded-3xl my-16 md:my-24"
       style={style}
     >
       <div
@@ -52,7 +52,7 @@ export const CardFlipped = ({ heading, smallHeading, text, img, style }) => {
         </figure>
       </div>
       <article
-        className="px-8 mt-16 mb-8 md:px-14 md:my-14 flex flex-col justify-center"
+        className="px-8 mt-16 mb-8 md:px-14 lg:px-20 md:my-14 flex flex-col justify-center"
         data-sal="slide-left"
         data-sal-duration="500"
         data-sal-easing="ease-out-quart"

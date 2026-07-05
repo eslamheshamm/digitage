@@ -40,7 +40,7 @@ const logos = [
 
 const Clients = () => {
   return (
-    <section className="flex justify-center items-center flex-col mt-36 mb-20 text-white">
+    <section className="flex justify-center items-center flex-col mt-24 md:mt-32 mb-16 md:mb-24 text-white">
       <h2 className="uppercase font-title font-bold text-xs mb-10">clients</h2>
       <div
         className="flex justify-around items-center h-full w-full"

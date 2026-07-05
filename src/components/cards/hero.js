@@ -14,7 +14,7 @@ const Hero = () => {
       style={card}
     >
       <article
-        className="px-8 my-10 md:p-16"
+        className="px-8 my-10 md:p-16 lg:p-20"
         data-sal="slide-right"
         data-sal-duration="500"
         data-sal-easing="ease-out-quart"

@@ -2,7 +2,7 @@ import Button from "../button"
 
 const BannerSmall = ({ header, text }) => {
   return (
-    <section className="flex text-white pl-6 md:pl-14 flex-col md:flex-row justify-between items-start my-16">
+    <section className="flex text-white pl-6 md:pl-14 flex-col md:flex-row justify-between items-start gap-6 my-16 md:my-24">
       <article>
         <h2 className="text-2xl md:text-4xl mb-4 font-rock">{header}</h2>
         <p className="opacity-70">{text}</p>
