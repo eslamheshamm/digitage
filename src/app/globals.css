@@ -99,8 +99,9 @@
 .carousel-content {
   display: flex;
   align-items: center;
-  justify-content: center;
-  justify-items: center;
+  /* must be flex-start: with centered overflow the item strip shifts left
+     and the translateX index math no longer points at the right slides */
+  justify-content: flex-start;
   /* on-screen movement: ease-in-out-cubic, transform only (GPU) */
   transition: transform 400ms cubic-bezier(0.645, 0.045, 0.355, 1);
   will-change: transform;
