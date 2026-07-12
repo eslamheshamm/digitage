@@ -3,7 +3,6 @@ import Cards from "@/components/cards/cards"
 import Clients from "@/components/clients/clients"
 import BannerSmall from "@/components/banners/bannersmall"
 import BannerThree from "@/components/banners/banner-three"
-import Form from "@/components/form"
 
 export default function IndexPage() {
   return (
@@ -20,7 +19,6 @@ export default function IndexPage() {
         text={`We know how to deliver your message`}
       />
       <BannerThree />
-      <Form />
     </>
   )
 }
